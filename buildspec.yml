@@ -11,7 +11,6 @@ phases:
   build:
     commands:
       - echo "Building project..."
-      # If no build script exists, skip without failing
       - npm run build || echo "No build script found, skipping build"
 
 artifacts:
