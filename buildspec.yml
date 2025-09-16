@@ -11,6 +11,23 @@ phases:
     commands:
       - echo "Building project..."
       - npm run build || echo "No build script, skipping build"
+  post_build:
+    commands:
+      - echo "Packaging application for Elastic Beanstalk..."
+      - zip -r myapp.zip . -x "*.git*"   # create zip of project, exclude git files
+      - echo "Uploading application version to Elastic Beanstalk..."
+      - aws s3 cp myapp.zip s3://codepipeline-ap-south-1-7fffb193a528-4b49-a8d6-3f4a2b742ca3/myapp.zip
+      - aws elasticbeanstalk create-application-version \
+          --application-name node-app1 \
+          --version-label v$CODEBUILD_BUILD_NUMBER \
+          --source-bundle S3Bucket=codepipeline-ap-south-1-7fffb193a528-4b49-a8d6-3f4a2b742ca3,S3Key=myapp.zip \
+          --region ap-south-1
+      - echo "Updating Elastic Beanstalk environment..."
+      - aws elasticbeanstalk update-environment \
+          --application-name node-app1 \
+          --environment-name Node-api-demo1-env \
+          --version-label v$CODEBUILD_BUILD_NUMBER \
+          --region ap-south-1
 
 artifacts:
   files:
@@ -19,5 +36,5 @@ artifacts:
     - package-lock.json
     - src/**/*
     - routes/**/*
-  base-directory: '.'   # ensures EB sees files at root
+  base-directory: '.'
   discard-paths: no
