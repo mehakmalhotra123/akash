@@ -14,13 +14,13 @@ phases:
   post_build:
     commands:
       - echo "Packaging application for Elastic Beanstalk..."
-      - zip -r myapp.zip . -x "*.git*"   # create zip of project, exclude git files
+      - zip -r myapp-$CODEBUILD_BUILD_NUMBER.zip . -x "*.git*"   # unique zip per build
       - echo "Uploading application version to Elastic Beanstalk..."
-      - aws s3 cp myapp.zip s3://codepipeline-ap-south-1-7fffb193a528-4b49-a8d6-3f4a2b742ca3/myapp.zip
+      - aws s3 cp myapp-$CODEBUILD_BUILD_NUMBER.zip s3://codepipeline-ap-south-1-7fffb193a528-4b49-a8d6-3f4a2b742ca3/myapp-$CODEBUILD_BUILD_NUMBER.zip
       - aws elasticbeanstalk create-application-version \
           --application-name node-app1 \
           --version-label v$CODEBUILD_BUILD_NUMBER \
-          --source-bundle S3Bucket=codepipeline-ap-south-1-7fffb193a528-4b49-a8d6-3f4a2b742ca3,S3Key=myapp.zip \
+          --source-bundle S3Bucket=codepipeline-ap-south-1-7fffb193a528-4b49-a8d6-3f4a2b742ca3,S3Key=myapp-$CODEBUILD_BUILD_NUMBER.zip \
           --region ap-south-1
       - echo "Updating Elastic Beanstalk environment..."
       - aws elasticbeanstalk update-environment \
