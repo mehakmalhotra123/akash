@@ -12,21 +12,21 @@ async function getDbUri() {
     return process.env.MONGO_URI;
   } else {
     // production (App Runner)
-    const client = new SecretsManagerClient({ region: "us-east-1" });
+      const client = new SecretsManagerClient({ region: "ap-south-1" });
     const command = new GetSecretValueCommand({ SecretId: "mongoDbSecret" });
     const response = await client.send(command);
     return JSON.parse(response.SecretString).MONGO_URI;
   }
 }
 
-(async () => {
+(async () => {  
   try {
     const mongoUri = await getDbUri();
     await mongoose.connect(mongoUri);
     console.log("✅ MongoDB connected");
 
     const PORT = process.env.PORT || 3000;
-    app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+    app.listen(PORT, "0.0.0.0", () => console.log(`🚀 Server running on port ${PORT}`));
   } catch (err) {
     console.error("❌ Failed to start server", err);
   }
