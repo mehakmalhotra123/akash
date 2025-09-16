@@ -5,10 +5,12 @@ phases:
     runtime-versions:
       nodejs: 20
     commands:
+      - echo "Installing dependencies..."
       - npm install
   build:
     commands:
-      - npm run build || echo "No build script"
+      - echo "Building project..."
+      - npm run build || echo "No build script, skipping build"
 
 artifacts:
   files:
@@ -17,4 +19,5 @@ artifacts:
     - package-lock.json
     - src/**/*
     - routes/**/*
-    - .env  # optional, but recommended to use Secrets Manager instead
+  base-directory: '.'   # ensures EB sees files at root
+  discard-paths: no
