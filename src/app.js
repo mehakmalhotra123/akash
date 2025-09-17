@@ -17,7 +17,7 @@ app.use(express.json());
 
 // Health endpoint
 app.get("/health", (req, res) => {
-  res.json({ status: "API is healthy 🚀! Hurreyyy!!!!! Beanstalk is working | Sandeep" });
+  res.json({ status: "API is healthy 🚀" });
 });
 
 // Routes
