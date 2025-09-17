@@ -17,7 +17,7 @@ app.use(express.json());
 
 // Health endpoint
 app.get("/health", (req, res) => {
-  res.json({ status: "API is healthy 🚀! - v2" });
+  res.json({ status: "API is healthy 🚀! - hurrrryyyyyyyy !" });
 });
 
 // Routes
