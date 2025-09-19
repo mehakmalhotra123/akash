@@ -1,34 +1,42 @@
 const User = require("../models/userModel");
-const s3 = require("../config/s3");
+const { getS3, getAwsConfig } = require("../config/s3");
 const { v4: uuidv4 } = require("uuid");
 
 // Create User with Image
 const createUser = async (req, res) => {
     try {
         let imageUrl = null;
-      
+
         if (req.file) {
+            const s3 = await getS3();
+            const awsConfig = await getAwsConfig();
+
             const params = {
-                Bucket: process.env.AWS_BUCKET_NAME,
+                Bucket: awsConfig.bucketName,
                 Key: `users/${uuidv4()}_${req.file.originalname}`,
                 Body: req.file.buffer,
                 ContentType: req.file.mimetype,
-                //ACL: "public-read"
+                // ACL: "public-read"
             };
+
             const uploadedImage = await s3.upload(params).promise();
             imageUrl = uploadedImage.Location;
         }
 
         const user = await User.create({
             ...req.body,
-            imageUrl
+            imageUrl,
         });
 
         res.status(201).json(user);
     } catch (err) {
+        console.error("Error creating user:", err);
         res.status(400).json({ error: err.message });
     }
 };
+
+// Other CRUD handlers unchanged...
+
 
 // Read all
 const getUsers = async (req, res) => {

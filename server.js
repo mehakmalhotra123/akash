@@ -13,7 +13,7 @@ async function getDbUri() {
     return process.env.MONGO_URI;
   } else {
     // production (App Runner)
-      const client = new SecretsManagerClient({ region: "ap-south-1" });
+    const client = new SecretsManagerClient({ region: "ap-south-1" });
     const command = new GetSecretValueCommand({ SecretId: "mongoDbSecret" });
     const response = await client.send(command);
     return JSON.parse(response.SecretString).MONGO_URI;
