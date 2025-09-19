@@ -22,6 +22,9 @@ const createUser = async (req, res) => {
                 // ACL: "public-read"
             };
 
+            if (!awsConfig.bucketName) {
+                console.error("Bucket name is missing! Check SecretsManager or .env");
+            }
             const uploadedImage = await s3.upload(params).promise();
             imageUrl = uploadedImage.Location;
         }
