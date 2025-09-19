@@ -11,6 +11,9 @@ const createUser = async (req, res) => {
             const s3 = await getS3();
             const awsConfig = await getAwsConfig();
 
+            //testing
+            console.log("AWS Config:", awsConfig);
+
             const params = {
                 Bucket: awsConfig.bucketName,
                 Key: `users/${uuidv4()}_${req.file.originalname}`,
