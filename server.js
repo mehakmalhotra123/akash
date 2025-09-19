@@ -5,10 +5,11 @@ const { SecretsManagerClient, GetSecretValueCommand } = require("@aws-sdk/client
 
 dotenv.config(); // load .env if available
 
+
+
 async function getDbUri() {
   if (process.env.MONGO_URI) {
     // local dev
-    //console.log("Using local .env MONGO_URI" + process.env.MONGO_URI );
     return process.env.MONGO_URI;
   } else {
     // production (App Runner)
