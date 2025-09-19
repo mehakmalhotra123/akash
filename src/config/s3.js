@@ -8,9 +8,9 @@
     async function getAwsConfig() {
         try {
             if (!cachedSecrets && process.env.AWS_SECRET_NAME) {
-                const sm = new AWS.SecretsManager({ region: process.env.AWS_REGION });
+                const sm = new AWS.SecretsManager({ region: "ap-south-1" });
                 const secretData = await sm
-                    .getSecretValue({ SecretId: process.env.AWS_SECRET_NAME })
+                    .getSecretValue({ SecretId: "s3bucket-secret" })
                     .promise();
 
                 cachedSecrets = JSON.parse(secretData.SecretString);
