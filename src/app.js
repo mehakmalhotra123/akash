@@ -1,4 +1,4 @@
-const express = require("express");
+iconst express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const userRoutes = require("./routes/userRoutes");
@@ -17,7 +17,7 @@ app.use(express.json());
 
 // Health endpoint
 app.get("/health", (req, res) => {
-  res.json({ status: "API is healthy 🚀! - hurrrryyyyyyyy !" });
+  res.json({ status: "API is healthy 🚀! - hurrrryyyyyyyy hello api!" });
 });
 
 // Routes
